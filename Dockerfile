@@ -11,5 +11,6 @@ RUN apk add --no-cache postgresql-client mariadb-client mongodb-tools sqlite
 
 COPY --from=runitor /usr/local/bin/runitor /usr/bin/runitor
 COPY --from=moreutils /usr/bin/ts /usr/bin/ts
+COPY rootfs /
 
 ENV KUBECONFIG=/.kube/config
