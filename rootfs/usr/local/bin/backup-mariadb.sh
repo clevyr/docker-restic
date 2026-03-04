@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+set -u
+
+: "${DB_PASSWORD_FILE:=/mariadb/mariadb-password}"
+
+if [ -f "$DB_PASSWORD_FILE" ]; then
+  read -r DB_PASSWORD < "$DB_PASSWORD_FILE"
+fi
+
+export MYSQL_PWD="$DB_PASSWORD"
+
+set -ex
+mariadb-dump --add-drop-table --host="$DB_HOST" --user="$DB_USER" "$DB_NAME"
