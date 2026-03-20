@@ -14,3 +14,4 @@ COPY --from=moreutils /usr/bin/ts /usr/bin/ts
 COPY rootfs /
 
 ENV KUBECONFIG=/.kube/config
+ENV RESTIC_GROUP_BY=tags

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+exec restic --group-by="$RESTIC_GROUP_BY"
