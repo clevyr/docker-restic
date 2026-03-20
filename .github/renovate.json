@@ -11,7 +11,8 @@
         "ARG +RESTIC_IMAGE=(?<depName>.+)\\nARG +RESTIC_TAG=(?<currentValue>.+)@(?<currentDigest>.+)",
         "<!--renovate image=(?<depName>.+) -->\\n.*\\/Version-v(?<currentValue>.+?)-"
       ],
-      "datasourceTemplate": "github-releases"
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "restic/restic"
     }
   ],
   "packageRules": [
