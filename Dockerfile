@@ -5,6 +5,15 @@ FROM ghcr.io/bdd/runitor:v1.4.1-alpine@sha256:2b8314456908065f5d79cd25c7c310ddec
 
 FROM ghcr.io/gabe565/moreutils:0.6.1@sha256:ae74fb352762709efdb79a67d1b51ab78d6fd04b2e39eb6d53e218674e7dc4e5 AS moreutils
 
+FROM golang:1.26.1-alpine AS wrapper
+WORKDIR /app
+
+COPY go.mod ./
+RUN go mod download
+
+COPY cmd cmd
+RUN go build -ldflags='-w -s' -trimpath ./cmd/resticwrap
+
 FROM $RESTIC_IMAGE:$RESTIC_TAG AS restic
 RUN test -f /usr/bin/restic
 
@@ -12,6 +21,7 @@ RUN apk add --no-cache bash postgresql-client mariadb-client mongodb-tools sqlit
 
 COPY --from=runitor /usr/local/bin/runitor /usr/bin/runitor
 COPY --from=moreutils /usr/bin/ts /usr/bin/ts
+COPY --from=wrapper /app/resticwrap /usr/local/bin/resticwrap
 COPY rootfs /
 
 ENV KUBECONFIG=/.kube/config
