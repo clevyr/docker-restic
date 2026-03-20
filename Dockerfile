@@ -16,3 +16,4 @@ COPY rootfs /
 
 ENV KUBECONFIG=/.kube/config
 ENV RESTIC_GROUP_BY=tags
+ENV RESTIC_CACHE_DIR=/cache
