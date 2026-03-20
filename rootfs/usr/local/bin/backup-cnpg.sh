@@ -9,7 +9,7 @@ read -r DB_USER < "$CNPG_SECRET_PATH/username"
 read -r PGPASSWORD < "$CNPG_SECRET_PATH/password"
 export PGPASSWORD
 
-set -ex
-pg_dump --clean --if-exists --no-owner \
+set -x
+exec pg_dump --clean --if-exists --no-owner \
   --host="$DB_HOST" --username="$DB_USER" --dbname="$DB_NAME" \
   "$@"

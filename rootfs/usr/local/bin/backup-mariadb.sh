@@ -9,5 +9,5 @@ fi
 
 export MYSQL_PWD="$DB_PASSWORD"
 
-set -ex
-mariadb-dump --add-drop-table --host="$DB_HOST" --user="$DB_USER" "$DB_NAME"
+set -x
+exec mariadb-dump --add-drop-table --host="$DB_HOST" --user="$DB_USER" "$DB_NAME"
