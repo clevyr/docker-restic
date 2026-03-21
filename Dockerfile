@@ -12,7 +12,7 @@ COPY go.mod ./
 RUN go mod download
 
 COPY cmd cmd
-RUN go build -ldflags='-w -s' -trimpath ./cmd/resticwrap
+RUN go build -ldflags='-w -s' -trimpath ./cmd/restic-wrapper
 
 FROM $RESTIC_IMAGE:$RESTIC_TAG AS restic
 RUN test -f /usr/bin/restic
@@ -21,7 +21,7 @@ RUN apk add --no-cache bash postgresql-client mariadb-client mongodb-tools sqlit
 
 COPY --from=runitor /usr/local/bin/runitor /usr/bin/runitor
 COPY --from=moreutils /usr/bin/ts /usr/bin/ts
-COPY --from=wrapper /app/resticwrap /usr/local/bin/resticwrap
+COPY --from=wrapper /app/restic-wrapper /usr/local/bin/restic
 COPY rootfs /
 
 ENV KUBECONFIG=/.kube/config
