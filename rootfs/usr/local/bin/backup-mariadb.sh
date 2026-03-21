@@ -9,6 +9,6 @@ fi
 
 export MYSQL_PWD="$DB_PASSWORD"
 
-set -x
+set -ex
 exec mariadb-dump --add-drop-table --skip-dump-date --single-transaction \
-  --host="$DB_HOST" --user="$DB_USER" "$DB_NAME"
+  --host="$DB_HOST" --user="$DB_USER" "$DB_NAME" "$@"

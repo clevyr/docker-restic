@@ -16,4 +16,5 @@ args=(
 )
 
 echo "+ mongodump ${args[*]} --password=***" >&2
-exec mongodump "${args[@]}" --password="$DB_PASSWORD"
+set -e
+exec mongodump "${args[@]}" --password="$DB_PASSWORD" "$@"
