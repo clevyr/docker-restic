@@ -19,7 +19,8 @@ func main() {
 
 func run(args []string) error {
 	var hasGroupBy, hasStdinFromCommand, hasStdinFilename bool
-	var cmd, stdinExtension string
+	stdinName := os.Getenv("RESTIC_HOST")
+	var cmd, stdinExt string
 	var sepIndex int
 
 outer:
@@ -38,10 +39,20 @@ outer:
 				if len(args) > i+1 {
 					next := args[i+1]
 					switch filepath.Base(next) {
-					case "backup-cnpg.sh", "backup-mariadb.sh", "backup-sqlite.sh":
-						stdinExtension = ".sql"
+					case "backup-cnpg.sh", "backup-mariadb.sh":
+						stdinExt = ".sql"
+					case "backup-sqlite.sh":
+						stdinExt = ".sql"
+						if len(args) > i+2 {
+							stdinName = args[i+2]
+							ext := filepath.Ext(stdinName)
+							switch ext {
+							case ".db", ".sqlite3", ".sqlite":
+								stdinName = strings.TrimSuffix(stdinName, ext)
+							}
+						}
 					case "backup-mongodb.sh":
-						stdinExtension = ".dmp"
+						stdinExt = ".dmp"
 					}
 				}
 				break outer
@@ -65,10 +76,8 @@ outer:
 		}
 	}
 
-	if hasStdinFromCommand && !hasStdinFilename {
-		if host := os.Getenv("RESTIC_HOST"); host != "" {
-			finalArgs = append(finalArgs, "--stdin-filename="+host+stdinExtension)
-		}
+	if hasStdinFromCommand && !hasStdinFilename && stdinName != "" {
+		finalArgs = append(finalArgs, "--stdin-filename="+stdinName+stdinExt)
 	}
 
 	finalArgs = append(finalArgs, args[sepIndex:]...)
