@@ -1,4 +1,4 @@
-# Personal Restic Container
+# Opinionated Restic Container
 
 <!--renovate image=ghcr.io/restic/restic -->
 [![Version](https://img.shields.io/badge/Version-v0.18.1-informational?style=flat)](https://github.com/gabe565/docker-restic/pkgs/container/restic)
