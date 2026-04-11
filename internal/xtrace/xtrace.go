@@ -1,4 +1,4 @@
-package clix
+package xtrace
 
 import (
 	"io"

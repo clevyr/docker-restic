@@ -10,7 +10,7 @@ import (
 	"syscall"
 
 	"gabe565.com/utils/termx"
-	"github.com/gabe565/docker-restic/internal/clix"
+	"github.com/gabe565/docker-restic/internal/xtrace"
 )
 
 func main() {
@@ -95,7 +95,7 @@ func execRestic(args []string) error {
 	path := "/usr/bin/restic"
 	argv := append([]string{path}, args...)
 
-	clix.XTrace(os.Stderr, argv)
+	xtrace.XTrace(os.Stderr, argv)
 
 	if dryRunStr := os.Getenv("RESTIC_WRAPPER_DRY_RUN"); dryRunStr != "" {
 		if dryRun, _ := strconv.ParseBool(dryRunStr); dryRun {

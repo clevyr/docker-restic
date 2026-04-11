@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/gabe565/docker-restic/internal/clix"
+	"github.com/gabe565/docker-restic/internal/xtrace"
 	"github.com/urfave/cli/v3"
 )
 
@@ -35,7 +35,7 @@ func RunCmd(ctx context.Context, cmd *cli.Command, opts *RunOpts, name string, a
 	e.Stdout = cmd.Writer
 	e.Stderr = cmd.ErrWriter
 
-	xtrace := clix.XTraceString(e.Args)
+	xtrace := xtrace.XTraceString(e.Args)
 	for _, v := range opts.Redact {
 		xtrace = strings.ReplaceAll(xtrace, v, "***")
 	}
