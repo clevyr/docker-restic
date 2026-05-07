@@ -1,16 +1,13 @@
 package postgres
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
-
 	"github.com/gabe565/docker-restic/internal/cobrax"
 	"github.com/gabe565/docker-restic/internal/dumpdb"
 	"github.com/spf13/cobra"
 )
 
 func New() *cobra.Command {
-	var mount, host, database, username, password, restrictKey string
+	var mount, host, database, username, password string
 	var dryRun bool
 
 	fs := &cobrax.Flags{}
@@ -23,16 +20,12 @@ func New() *cobra.Command {
 				return err
 			}
 
-			if restrictKey == "" {
-				sum := sha256.Sum256([]byte(host + database + username + password + "\n"))
-				restrictKey = hex.EncodeToString(sum[:])
-			}
-
 			args = append([]string{
+				"--format=custom",
+				"--compress=0",
 				"--clean",
 				"--if-exists",
 				"--no-owner",
-				"--restrict-key=" + restrictKey,
 				"--host=" + host,
 				"--username=" + username,
 				"--dbname=" + database,
@@ -55,8 +48,6 @@ func New() *cobra.Command {
 		cobrax.Env("DB_USERNAME"), cobrax.SecretFile(&mount, "username"))
 	fs.String(&password, dumpdb.FlagPassword, "p", "", "Database password",
 		cobrax.Env("DB_PASSWORD"), cobrax.SecretFile(&mount, "password"))
-	fs.String(&restrictKey, "restrict-key", "", "", "pg_dump restrict key",
-		cobrax.Env("PG_RESTRICT_KEY"))
 	fs.Bool(&dryRun, dumpdb.FlagDryRun, "", false, "Dry run",
 		cobrax.Env("DB_DRY_RUN"))
 

@@ -41,11 +41,11 @@ outer:
 				sepIndex = i
 				subCmd := args[i+1:]
 				if len(subCmd) >= 2 && filepath.Base(subCmd[0]) == "dumpdb" {
+					stdinExt = ".sql"
 					switch subCmd[1] {
-					case "cnpg", "mariadb":
-						stdinExt = ".sql"
+					case "cnpg", "mongodb":
+						stdinExt = ".dmp"
 					case "sqlite":
-						stdinExt = ".sql"
 						if len(subCmd) >= 3 {
 							stdinName = subCmd[2]
 							ext := filepath.Ext(stdinName)
@@ -54,8 +54,6 @@ outer:
 								stdinName = strings.TrimSuffix(stdinName, ext)
 							}
 						}
-					case "mongodb":
-						stdinExt = ".dmp"
 					}
 				}
 				break outer
