@@ -26,6 +26,8 @@ type RunOpts struct {
 }
 
 func RunCmd(cmd *cobra.Command, name string, args []string, opts *RunOpts) error {
+	cmd.SilenceUsage = true
+
 	if opts == nil {
 		opts = &RunOpts{}
 	}

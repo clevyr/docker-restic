@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"log/slog"
 	"os"
+	"os/exec"
 
 	"github.com/gabe565/docker-restic/cmd/restoredb/mariadb"
 	"github.com/gabe565/docker-restic/cmd/restoredb/mongodb"
@@ -36,6 +38,11 @@ connection details the same way, so a dump can be piped straight back in:
 func main() {
 	if err := New().Execute(); err != nil {
 		slog.Error(err.Error())
+
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			os.Exit(exitErr.ExitCode())
+		}
 		os.Exit(1)
 	}
 }
